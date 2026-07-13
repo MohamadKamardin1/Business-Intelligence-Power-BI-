@@ -93,8 +93,15 @@ export class CustomersPage extends LitElement {
     }
   `;
 
-  updated() {
-    if (this.dbState.value) {
+  private _prevDb: any = null;
+  private _prevFilter: string = '';
+
+  willUpdate() {
+    const db = this.dbState.value;
+    const filterKey = JSON.stringify(this.filterState.value);
+    if (db && (db !== this._prevDb || filterKey !== this._prevFilter)) {
+      this._prevDb = db;
+      this._prevFilter = filterKey;
       this.calculateMetrics();
     }
   }

@@ -58,7 +58,13 @@ export async function getQueryExecutor() {
   const db = await getAnalyticsDB();
   return {
     query: (sql: string) => {
+      const qId = `Query_${Math.random().toString(36).substr(2, 5)}`;
+      console.time(qId);
+      
       const res = db.exec(sql);
+      
+      console.timeEnd(qId);
+      
       if (res.length === 0) return [];
       
       const columns = res[0].columns;
